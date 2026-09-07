@@ -1,11 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
+    <h1>Счетчик</h1>
+    <div class="" x-data="{counter: 0}">
+      <button x-on:click="counter++">Плюс</button>
+      <span x-text="counter"></span>
+      <button x-on:click="counter--">Минус</button>
+    </div>
+
+    <div class="" x-data="{ open: false, toggle() { this.open = !this.open}}">
+      <button x-on:click="toggle()">Hide</button>
+      <span x-show="open">Покажись</span>
+    </div>
+
+    <div class="" x-data="dropdown">
+      <button x-on:click="toggle">Toggle</button>
+      <div class="" x-show="open">Open</div>
+    </div>
+
+    <div
+      class=""
+      x-data="{
+        counter:0,
+        setStartValue(e){
+            this.counter = e.target.value
+        }
+    }"
+    >
+      <label for="count">Начальное значение</label>
+      <input type="number" name="count" id="count" @input="setStartValue" />
+
+      <button x-on:click="counter++">Плюс</button>
+      <span x-text="counter"></span>
+      <button x-on:click="counter--">Минус</button>
+    </div>
+
+    <div class="" x-data="{prevCounter: 0}" @send = "prevCounter = $event.detail.counter">
+        <span x-text="prevCounter"></span>
+        <div class="" x-data="{counter: 0}">
+            <button x-on:click="$dispatch('send', { counter },); counter++">Плюс</button>
+            <span x-text="counter"></span>
+            <button x-on:click="$dispatch('send', { counter}); counter--">Минус</button>
+        </div>
     
-</body>
+
+
+    </div>
+
+    <script async src="js/index.js" defer></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>

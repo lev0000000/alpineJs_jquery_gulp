@@ -2,8 +2,11 @@ var gulp = require('gulp'), // Подключаем Gulp
     sass = require('gulp-sass')(require('sass')), //Подключаем Sass пакет,
     concat = require('gulp-concat'), // Подключаем gulp-concat (для конкатенации файлов)
     uglify = require('gulp-uglifyjs'), // Подключаем gulp-uglifyjs (для сжатия JS)
-    merge = require('merge-stream');
+    merge = require('merge-stream')
 
+gulp.task('del', function (){
+    return deleteAsync(['dist']);
+})
 
 gulp.task('sass', function () {
     return gulp.src('app/sass/main.sass')
@@ -13,15 +16,16 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function () {
     gulp.watch('app/sass/**/*.sass', gulp.series('sass'))
+    
 })
 
 gulp.task('scripts', function () {
     return gulp.src([
         'app/libs/jquery/dist/jquery.min.js',
-        'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js'
+        'app/libs/magnific-popup/dist/jquery.magnific-popup.min.js',
+        'app/libs/alpinejs/dist/cdn.min.js'
     ])
-        .pipe(concat('libs.min.js'))
-        .pipe(uglify())
+        .pipe(concat('index.js'))
         .pipe(gulp.dest('app/js'))
 })
 
@@ -32,7 +36,7 @@ gulp.task('build', gulp.series('sass', 'scripts', function () {
     ])
         .pipe(gulp.dest('dist/css'))
 
-    var buildJs = gulp.src('app/js/**/*') // Переносим скрипты в продакшен
+    var buildJs = gulp.src('app/js/**/*.js') // Переносим скрипты в продакшен
         .pipe(gulp.dest('dist/js'))
 
     var buildHtml = gulp.src('app/*.html') // Переносим HTML в продакшен
@@ -41,6 +45,6 @@ gulp.task('build', gulp.series('sass', 'scripts', function () {
     return merge(buildCss, buildJs, buildHtml);
 }));
 
-// gulp.task('mytask', function() {
+// gulp.task('mytask', function() {s
 //   console.log('Привет, я таск!');
 // });
